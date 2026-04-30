@@ -1,37 +1,62 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="script.js"></script>
-    <link rel="icon" href="assets/jao.png">
+    <link rel="icon" href="assets/jao.png" />
     <title>Atrasos Carvalho</title>
-</head>
-<body>
+  </head>
+  <body>
     <section>
-        <div class="display">
-            <h1>No horário: <p>...</p></h1>
-            <h1>Atrasos: <p>...</p></h1>
-            <h1>Faltas: <p>...</p></h1>
-        </div>
-        <div class="btContainer">
-            <button class="bt horario" id="btHorario" onclick="registrar('popHorario')">Chegou no horário</button>
-            <button class="bt atraso" id="btAtraso" onclick="registrar('popAtraso')">Atrasou</button>
-            <button class="bt falta" id="btFalta" onclick="registrar('popFalta')">Faltou</button>
-        </div>
-        <div class="popups">
-            <div class="popup horarioP" id="popHorario">
-                <h2>Chegada no horário registrada!</h2>
-            </div>
-            <div class="popup atrasoP" id="popAtraso">
-                <h2>Atraso registrado!</h2>
-            </div>
-            <div class="popup faltaP" id="popFalta">
-                <h2>Falta registrada!</h2>
-            </div>
-        </div>
-        <img src="assets/jao.png" alt="">
+      <div class="display">
+        <h1>
+          No horário:
+          <p id="horario">...</p>
+        </h1>
+        <h1>
+          Atrasos:
+          <p id="atrasado">...</p>
+        </h1>
+        <h1>
+          Faltas:
+          <p id="falta">...</p>
+        </h1>
+      </div>
+      <div class="btContainer">
+        <button
+          class="bt horario"
+          id="btHorario"
+          onclick="registrar('popHorario', 1)"
+        >
+          Chegou no horário
+        </button>
+        <button
+          class="bt atraso"
+          id="btAtraso"
+          onclick="registrar('popAtraso', 2)"
+        >
+          Atrasou
+        </button>
+        <button class="bt falta" id="btFalta" onclick="registrar('popFalta', 3)">
+          Faltou
+        </button>
+      </div>
+      <div class="popup horarioP" id="popHorario">
+        <h2>Chegada no horário registrada!</h2>
+      </div>
+      <div class="popup atrasoP" id="popAtraso">
+        <h2>Atraso registrado!</h2>
+      </div>
+      <div class="popup faltaP" id="popFalta">
+        <h2>Falta registrada!</h2>
+      </div>
+      <div class="popup erro" id="popErro">
+        <h2>Você só pode registrar uma chegada por dia!</h2>
+      </div>
+      <img src="assets/jao.png" alt="" />
     </section>
-</body>
+  </body>
 </html>

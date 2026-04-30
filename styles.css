@@ -80,15 +80,6 @@ img {
     width: 40%;
 }
 
-.popups {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    position: absolute;
-    bottom: 20px;
-    left: 20px;
-}
-
 .popup {
     border: 5px solid #F1F1F1;
     width: 450px;
@@ -96,6 +87,9 @@ img {
     padding: 10px;
     border-radius: 5px;
     transition: all 0.3s ease;
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
 }
 
 .horarioP {
@@ -110,5 +104,10 @@ img {
 
 .faltaP {
     border-color: crimson;
+    margin-left: -700px;
+}
+
+.erro {
+    border-color: #414141;
     margin-left: -700px;
 }
