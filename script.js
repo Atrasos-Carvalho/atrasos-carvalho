@@ -13,6 +13,7 @@ function registrar(tipo, id) {
       }, 3500);
     }
   });
+  fazerCounts()
 }
 
 async function create(id) {
@@ -30,7 +31,7 @@ async function create(id) {
       }, 3500);
     }
     console.error("Erro: ", error);
-  }
+  } 
 }
 
 async function getCount() {
