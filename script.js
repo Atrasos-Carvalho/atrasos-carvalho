@@ -1,4 +1,6 @@
-fazerCounts();
+document.addEventListener("DOMContentLoaded", () => {
+  fazerCounts();
+});
 
 function registrar(tipo, id) {
   create(id).then(() => {
