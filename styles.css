@@ -42,6 +42,10 @@ body {
     text-align: start;
 }
 
+.bt:hover {
+    cursor: pointer;
+}
+
 .horario {
     border-color: greenyellow;
     color: greenyellow;
