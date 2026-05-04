@@ -5,10 +5,14 @@
     padding: 0;
 }
 
+.background{
+    height: 100%;
+    position: absolute;
+    width: 100%;
+    z-index: -1;
+}
+
 body {
-    background: url('assets/bd764bb25d49a05105060185774ba14cd2c846f7.jpg');
-    background-repeat: no-repeat;
-    background-size: cover;
     padding: 20px;
 }
 
