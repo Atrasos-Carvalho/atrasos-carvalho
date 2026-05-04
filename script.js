@@ -20,7 +20,7 @@ async function create(id) {
   try {
     const res = await axios.post(
       "https://ms-atrasos-carvalho.onrender.com/registros/create",
-      { id: id },
+      { tipo_id: id },
     );
   } catch (error) {
     if (error.response && error.response.status === 409) {
