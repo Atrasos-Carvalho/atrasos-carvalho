@@ -16,7 +16,7 @@ function registrar(tipo, id) {
 async function create(id) {
   try {
     const res = await axios.post(
-      "https://ms-atrasos-carvalho.onrender.com/url/registros/create",
+      "https://ms-atrasos-carvalho.onrender.com/registros/create",
       { id: id },
     );
   } catch (error) {
@@ -34,7 +34,7 @@ async function create(id) {
 async function getCount() {
   try {
     const res = await axios.get(
-      "https://ms-atrasos-carvalho.onrender.com/url/registros/find-count",
+      "https://ms-atrasos-carvalho.onrender.com/registros/find-count",
     );
 
     return res.data;
