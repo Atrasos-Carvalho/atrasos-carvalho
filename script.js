@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
 async function registrar(tipo, id) {
   const sucesso = await create(id);
 
-  if (!sucesso) return; // para tudo se deu erro
+  if (!sucesso) return;
 
   const popup = document.getElementById(tipo);
 
