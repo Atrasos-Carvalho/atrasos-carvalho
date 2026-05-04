@@ -2,18 +2,21 @@ document.addEventListener("DOMContentLoaded", () => {
   fazerCounts();
 });
 
-function registrar(tipo, id) {
-  create(id).then(() => {
-    const popup = document.getElementById(tipo);
+async function registrar(tipo, id) {
+  const sucesso = await create(id);
 
-    if (popup) {
-      popup.style.marginLeft = "0";
-      setTimeout(() => {
-        popup.style.marginLeft = "-700px";
-      }, 3500);
-    }
-  });
-  fazerCounts()
+  if (!sucesso) return; // para tudo se deu erro
+
+  const popup = document.getElementById(tipo);
+
+  if (popup) {
+    popup.style.marginLeft = "0";
+    setTimeout(() => {
+      popup.style.marginLeft = "-700px";
+    }, 3500);
+  }
+
+  fazerCounts();
 }
 
 async function create(id) {
@@ -22,6 +25,7 @@ async function create(id) {
       "https://ms-atrasos-carvalho.onrender.com/registros/create",
       { tipo_id: id },
     );
+    return true;
   } catch (error) {
     if (error.response && error.response.status === 409) {
       const popupE = document.getElementById("popErro");
@@ -31,6 +35,7 @@ async function create(id) {
       }, 3500);
     }
     console.error("Erro: ", error);
+    return false;
   } 
 }
 
