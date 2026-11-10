@@ -90,8 +90,8 @@ main { min-height: calc(100vh - 94px); }
 .is-elected .status-pill { color: white; background: var(--green); }
 .is-not-elected .status-pill { color: #46484c; background: #e8e8e8; }
 .candidate-meter { position: absolute; right: 24px; bottom: 21px; left: 24px; height: 6px; overflow: hidden; border-radius: 5px; background: #eee; }
-.candidate-meter span { display: block; width: 0; height: 100%; border-radius: inherit; background: #d9b800; transition: width .3s ease; }
-.candidate-ontime .candidate-meter span { background: var(--green); }
+.candidate-meter span { display: block; width: 0; height: 100%; border-radius: inherit; background: var(--green); transition: width .3s ease, background-color .2s ease; }
+.candidate-card.is-elected .candidate-meter span { background: #d9b800; }
 .election-rule { margin: 18px 0 0; color: #797b80; font-size: 12px; line-height: 1.55; }
 .popup { position: fixed; z-index: 5; bottom: 20px; left: 20px; max-width: min(450px, calc(100vw - 40px)); padding: 13px 16px; border: 3px solid #ddd; border-radius: 8px; background: #25272b; box-shadow: 0 5px 20px #0004; color: white; transition: transform .3s ease, opacity .3s ease; transform: translateX(calc(-100% - 30px)); opacity: 0; }
 .popup h2 { color: inherit; font-size: 14px; }.popup.show { transform: translateX(0); opacity: 1; }.horarioP { border-color: #a9d449; }.atrasoP { border-color: #f0c52a; }.faltaP { border-color: #ff7889; }
