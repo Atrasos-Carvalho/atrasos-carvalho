@@ -1,7 +1,10 @@
 const API_URL = "https://ms-atrasos-carvalho.onrender.com";
+// Altere este número para ajustar o total de dias da apuração.
 const TOTAL_DIAS = 109;
+let contagensAtualizadas = { noHorario: 0, atrasos: 0, faltas: 0 };
 
 document.addEventListener("DOMContentLoaded", () => {
+  atualizarTotalDiasNaTela();
   document.querySelectorAll(".nav-link").forEach(button => {
     button.addEventListener("click", () => abrirPagina(button.dataset.page));
   });
@@ -57,10 +60,12 @@ async function fazerCounts() {
 
   try {
     const data = await getCount();
-    const noHorario = numero(data?.total_cedo);
-    const atrasos = numero(data?.total_atraso);
-    const faltas = numero(data?.total_falta);
-    atualizarPlacar(noHorario, atrasos, faltas);
+    contagensAtualizadas = {
+      noHorario: numero(data?.total_cedo),
+      atrasos: numero(data?.total_atraso),
+      faltas: numero(data?.total_falta),
+    };
+    atualizarPlacar(contagensAtualizadas.noHorario, contagensAtualizadas.atrasos, contagensAtualizadas.faltas);
   } catch (error) {
     console.error("Erro ao buscar a apuração:", error);
     const updatedAt = document.getElementById("updatedAt");
@@ -75,10 +80,18 @@ function numero(value) {
   return Number.isFinite(parsed) && parsed > 0 ? parsed : 0;
 }
 
+function atualizarTotalDiasNaTela() {
+  texto("headerTotalDays", `${TOTAL_DIAS} dias`);
+  texto("totalDaysDisplay", TOTAL_DIAS);
+  const progressBar = document.getElementById("progressBar");
+  if (progressBar) progressBar.setAttribute("aria-valuemax", String(TOTAL_DIAS));
+}
+
 function atualizarPlacar(noHorario, atrasos, faltas) {
   const validos = noHorario + atrasos;
   const totalRegistros = validos + faltas;
   const apurados = Math.min(totalRegistros, TOTAL_DIAS);
+  const diasRestantes = Math.max(0, TOTAL_DIAS - apurados);
   const percentualApurado = (apurados / TOTAL_DIAS) * 100;
   const percentualAtrasos = validos ? (atrasos / validos) * 100 : 0;
   const percentualNoHorario = validos ? (noHorario / validos) * 100 : 0;
@@ -103,7 +116,10 @@ function atualizarPlacar(noHorario, atrasos, faltas) {
   const progressFill = document.getElementById("progressFill");
   if (progressFill) progressFill.style.width = `${percentualApurado}%`;
   const progressBar = document.getElementById("progressBar");
-  if (progressBar) progressBar.setAttribute("aria-valuenow", String(apurados));
+  if (progressBar) {
+    progressBar.setAttribute("aria-valuenow", String(apurados));
+    progressBar.setAttribute("aria-valuemax", String(TOTAL_DIAS));
+  }
   largura("lateSegment", validos ? (atrasos / totalRegistros) * 100 : 0);
   largura("onTimeSegment", validos ? (noHorario / totalRegistros) * 100 : 0);
   largura("absenceSegment", percentualFaltas);
@@ -112,25 +128,29 @@ function atualizarPlacar(noHorario, atrasos, faltas) {
   preencherMoldura("lateAvatar", percentualAtrasos);
   preencherMoldura("onTimeAvatar", percentualNoHorario);
 
-  const vencedor = validos > 0 && atrasos !== noHorario
-    ? (atrasos > noHorario ? "late" : "onTime")
+  const diferenca = atrasos - noHorario;
+  const vencedor = validos > 0 && Math.abs(diferenca) > diasRestantes
+    ? (diferenca > 0 ? "late" : "onTime")
     : null;
-  atualizarCandidato("candidateLate", "lateStatus", vencedor === "late", vencedor !== null);
-  atualizarCandidato("candidateOnTime", "onTimeStatus", vencedor === "onTime", vencedor !== null);
+  const empateFinal = diasRestantes === 0 && diferenca === 0;
+  const statusAtrasos = vencedor ? (vencedor === "late" ? "Eleito" : "Não eleito") : empateFinal ? "Empate" : "";
+  const statusNoHorario = vencedor ? (vencedor === "onTime" ? "Eleito" : "Não eleito") : empateFinal ? "Empate" : "";
+  atualizarCandidato("candidateLate", "lateStatus", vencedor === "late", statusAtrasos);
+  atualizarCandidato("candidateOnTime", "onTimeStatus", vencedor === "onTime", statusNoHorario);
   texto("electionRule", vencedor
-    ? `${vencedor === "late" ? "ATRASOS" : "NO HORÁRIO"} está eleito com maioria dos votos válidos (${formatarPercentual(vencedor === "late" ? percentualAtrasos : percentualNoHorario)}). Faltas são abstenções e não entram no cálculo. Apuração limitada a 109 dias.`
-    : validos === 0
-      ? "Aguardando votos válidos. Faltas são contabilizadas como abstenções; vence quem obtiver mais da metade dos votos válidos."
-      : "Empate na apuração: ainda não há candidato eleito. A eleição será decidida pela maioria dos votos válidos; faltas são abstenções.");
+    ? `${vencedor === "late" ? "ATRASOS" : "NO HORÁRIO"} está eleito matematicamente: a vantagem de ${Math.abs(diferenca)} voto(s) supera os ${diasRestantes} dias restantes. Faltas são abstenções e não entram no cálculo.`
+    : empateFinal
+      ? "Apuração encerrada em empate. Nenhum candidato foi eleito."
+      : `Em apuração: faltam ${diasRestantes} dias. A liderança de ${Math.abs(diferenca)} voto(s) ainda pode mudar; faltas são abstenções.`);
 }
 
-function atualizarCandidato(cardId, statusId, elected, resultKnown) {
+function atualizarCandidato(cardId, statusId, elected, statusText) {
   const card = document.getElementById(cardId);
   if (card) {
     card.classList.toggle("is-elected", elected);
-    card.classList.toggle("is-not-elected", resultKnown && !elected);
+    card.classList.toggle("is-not-elected", statusText === "Não eleito");
   }
-  texto(statusId, elected ? "Eleito" : resultKnown ? "Não eleito" : "Em apuração");
+  texto(statusId, statusText);
 }
 
 function texto(id, value) {
