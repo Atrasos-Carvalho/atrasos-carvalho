@@ -1,6 +1,6 @@
 const API_URL = "https://ms-atrasos-carvalho.onrender.com";
 // Altere este número para ajustar o total de dias da apuração.
-const TOTAL_DIAS = 111;
+const TOTAL_DIAS = 109;
 let contagensAtualizadas = { noHorario: 0, atrasos: 0, faltas: 0 };
 
 document.addEventListener("DOMContentLoaded", () => {
