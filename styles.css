@@ -118,7 +118,6 @@ main { min-height: calc(100vh - 94px); }
 .history-y-label { text-anchor: end; }.history-x-label { text-anchor: middle; }
 .history-line { fill: none; stroke-width: 3.5; stroke-linecap: round; stroke-linejoin: round; }
 .history-line-late { stroke: var(--red); }.history-line-ontime { stroke: var(--blue); }
-.history-point-late { fill: var(--red); stroke: #fff; stroke-width: 1.5; }.history-point-ontime { fill: var(--blue); stroke: #fff; stroke-width: 1.5; }
 .history-hit-target { fill: transparent; cursor: crosshair; pointer-events: all; }
 .history-hover-line { stroke: #62676e; stroke-width: 1.2; stroke-dasharray: 4 4; opacity: .8; pointer-events: none; }
 .history-tooltip { position: absolute; z-index: 2; display: grid; gap: 2px; width: max-content; max-width: min(240px, calc(100% - 16px)); padding: 10px 12px; border: 1px solid #ffffff35; border-radius: 8px; color: #fff; background: #292d33ee; box-shadow: 0 4px 14px #16191d30; font-size: 12px; line-height: 1.55; pointer-events: none; }

@@ -182,19 +182,18 @@ function desenharGraficoHistorico(historico) {
   const datasEixo = fim === inicio ? [inicio] : [inicio, inicio + (fim - inicio) / 2, fim];
   datasEixo.forEach(data => criarElementoSvg(plot, "text", { x: posicaoX(data), y: margem.topo + alturaGrafico + 28, class: "history-x-label" }, formatarDataCurta(data)));
 
-  desenharSerie(plot, historico.pontos, "atrasos", "history-line-late", "history-point-late", posicaoX, posicaoY);
-  desenharSerie(plot, historico.pontos, "noHorario", "history-line-ontime", "history-point-ontime", posicaoX, posicaoY);
+  desenharSerie(plot, historico.pontos, "atrasos", "history-line-late", posicaoX, posicaoY);
+  desenharSerie(plot, historico.pontos, "noHorario", "history-line-ontime", posicaoX, posicaoY);
   criarElementoSvg(plot, "line", { id: "historyHoverGuide", x1: 0, y1: margem.topo, x2: 0, y2: margem.topo + alturaGrafico, class: "history-hover-line", style: "display:none" });
   if (chartDesc) chartDesc.textContent = `A série mostra as porcentagens acumuladas após cada dia com votos válidos, entre ${formatarData(inicio)} e ${formatarData(fim)}.`;
 }
 
-function desenharSerie(plot, pontos, chave, classeLinha, classePonto, posicaoX, posicaoY) {
+function desenharSerie(plot, pontos, chave, classeLinha, posicaoX, posicaoY) {
   const caminho = pontos.map((ponto, indice) => `${indice === 0 ? "M" : "L"} ${posicaoX(ponto.data).toFixed(2)} ${posicaoY(ponto[chave]).toFixed(2)}`).join(" ");
   if (caminho) criarElementoSvg(plot, "path", { d: caminho, class: `history-line ${classeLinha}` });
   pontos.forEach(ponto => {
     const detalhes = `${formatarData(ponto.data)} — ATRASOS ${formatarPercentual(ponto.atrasos)} — NO HORÁRIO ${formatarPercentual(ponto.noHorario)}`;
-    criarElementoSvg(plot, "circle", { cx: posicaoX(ponto.data), cy: posicaoY(ponto[chave]), r: 2.4, class: classePonto, "aria-label": detalhes });
-    criarElementoSvg(plot, "circle", { cx: posicaoX(ponto.data), cy: posicaoY(ponto[chave]), r: 7, class: "history-hit-target", "aria-label": detalhes });
+    criarElementoSvg(plot, "circle", { cx: posicaoX(ponto.data), cy: posicaoY(ponto[chave]), r: 8, class: "history-hit-target", "aria-label": detalhes });
   });
 }
 
