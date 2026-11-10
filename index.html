@@ -1,63 +1,116 @@
 <!doctype html>
-<html lang="en">
+<html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="styles.css" />
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="script.js"></script>
+    <script src="script.js" defer></script>
     <link rel="icon" href="assets/jao.png" />
     <title>Atrasos Carvalho</title>
   </head>
   <body>
-    <section>
-        <img class="background" src="assets/bd764bb25d49a05105060185774ba14cd2c846f7.jpg" alt="">
-      <div class="display">
-        <h1>
-          No horário:
-          <p id="horario">...</p>
-        </h1>
-        <h1>
-          Atrasos:
-          <p id="atrasado">...</p>
-        </h1>
-        <h1>
-          Faltas:
-          <p id="falta">...</p>
-        </h1>
-      </div>
-      <div class="btContainer">
-        <button
-          class="bt horario"
-          id="btHorario"
-          onclick="registrar('popHorario', 1)"
-        >
-          Chegou no horário
-        </button>
-        <button
-          class="bt atraso"
-          id="btAtraso"
-          onclick="registrar('popAtraso', 2)"
-        >
-          Atrasou
-        </button>
-        <button class="bt falta" id="btFalta" onclick="registrar('popFalta', 3)">
-          Faltou
-        </button>
-      </div>
-      <div class="popup horarioP" id="popHorario">
-        <h2>Chegada no horário registrada!</h2>
-      </div>
-      <div class="popup atrasoP" id="popAtraso">
-        <h2>Atraso registrado!</h2>
-      </div>
-      <div class="popup faltaP" id="popFalta">
-        <h2>Falta registrada!</h2>
-      </div>
-      <div class="popup erro" id="popErro">
-        <h2>Você só pode registrar uma chegada por dia!</h2>
-      </div>
-      <img src="assets/jao.png" alt="" />
-    </section>
+    <header class="topbar">
+      <a class="brand" href="#registro" aria-label="Atrasos Carvalho, início">
+        <img src="assets/jao.png" alt="" />
+        <span>ELEIÇÃO<br /><strong>CARVALHO</strong></span>
+      </a>
+      <div class="election-title">Apuração Geral <strong>109 dias</strong></div>
+      <nav class="main-nav" aria-label="Navegação principal">
+        <button class="nav-link active" type="button" data-page="registro">Registro diário</button>
+        <button class="nav-link" type="button" data-page="resultados">Resultados</button>
+      </nav>
+    </header>
+
+    <main>
+      <section class="page registration-page" id="registro" aria-labelledby="registration-title">
+        <img class="registration-background" src="assets/bd764bb25d49a05105060185774ba14cd2c846f7.jpg" alt="" />
+        <img class="carvalho-hero" src="assets/jao.png" alt="Carvalho sorrindo" />
+        <div class="registration-content">
+          <p class="eyebrow">ACOMPANHAMENTO</p>
+          <h1 id="registration-title">Placar do Carvalho</h1>
+          <p class="intro">Registre como foi o dia e acompanhe a disputa entre chegar no horário e se atrasar.</p>
+          <div class="display" aria-live="polite">
+            <article class="score score-on-time"><span>No horário</span><strong id="horario">…</strong></article>
+            <article class="score score-late"><span>Atrasos</span><strong id="atrasado">…</strong></article>
+            <article class="score score-absence"><span>Faltas</span><strong id="falta">…</strong></article>
+          </div>
+          <div class="btContainer">
+            <button class="bt horario" id="btHorario" onclick="registrar('popHorario', 1)">Chegou no horário</button>
+            <button class="bt atraso" id="btAtraso" onclick="registrar('popAtraso', 2)">Atrasou</button>
+            <button class="bt falta" id="btFalta" onclick="registrar('popFalta', 3)">Faltou</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="page results-page" id="resultados" aria-labelledby="results-title" hidden>
+        <div class="results-toolbar">
+          <div>
+            <p class="eyebrow">ELEIÇÃO GERAL · BRASIL</p>
+            <h1 id="results-title">Resultados da apuração</h1>
+          </div>
+          <button class="refresh-button" id="refreshResults" type="button" onclick="fazerCounts()"><span aria-hidden="true">⟳</span> Atualizar</button>
+        </div>
+
+        <div class="results-layout">
+          <aside class="stats-column" aria-label="Dados da apuração">
+            <section class="stat-card general-card">
+              <h2>Dados Gerais</h2>
+              <p class="updated-at">Última atualização <span id="updatedAt">Aguardando dados</span></p>
+              <dl>
+                <div><dt>Número de vagas</dt><dd>1</dd></div>
+                <div><dt>Total de dias</dt><dd>109</dd></div>
+                <div><dt>Dias apurados</dt><dd><span id="diasApurados">0</span></dd></div>
+              </dl>
+              <div class="progress-track" role="progressbar" aria-label="Dias apurados" aria-valuemin="0" aria-valuemax="109" aria-valuenow="0" id="progressBar"><span id="progressFill"></span></div>
+              <p class="progress-label" id="progressLabel">0% apurado</p>
+            </section>
+
+            <section class="stat-card voting-card">
+              <h2>Votação</h2>
+              <div class="vote-bar" aria-hidden="true"><span class="late-segment" id="lateSegment"></span><span class="ontime-segment" id="onTimeSegment"></span><span class="absence-segment" id="absenceSegment"></span></div>
+              <p class="votes-total"><strong id="totalRegistros">0</strong> registros</p>
+              <dl>
+                <div><dt>Votos válidos</dt><dd id="validVotes">0</dd></div>
+                <div class="legend-row"><dt><i class="legend-dot late-dot"></i>Atrasos</dt><dd id="lateVotes">0</dd></div>
+                <div class="legend-row"><dt><i class="legend-dot ontime-dot"></i>No horário</dt><dd id="onTimeVotes">0</dd></div>
+                <div class="legend-row"><dt><i class="legend-dot absence-dot"></i>Faltas (abstenções)</dt><dd id="absenceVotes">0</dd></div>
+              </dl>
+            </section>
+          </aside>
+
+          <section class="candidates" aria-label="Candidatos e resultado">
+            <div class="ballot-heading"><span>RESULTADO NOMINAL</span><span class="live-indicator"><i></i> AO VIVO</span></div>
+            <div class="candidate-grid">
+              <article class="candidate-card candidate-late" id="candidateLate">
+                <div class="candidate-identity">
+                  <div class="candidate-avatar" id="lateAvatar" aria-hidden="true"><img src="assets/carvalho-atraso.jpg" alt="" /></div>
+                  <div><span class="party-code">PA - 13</span><h2>ATRASOS</h2></div>
+                </div>
+                <div class="candidate-result"><strong id="latePercent">0,00%</strong><span><b id="lateVotesCard">0</b> votos</span></div>
+                <span class="status-pill" id="lateStatus">Em apuração</span>
+                <div class="candidate-meter"><span id="lateMeter"></span></div>
+              </article>
+
+              <article class="candidate-card candidate-ontime" id="candidateOnTime">
+                <div class="candidate-identity">
+                  <div class="candidate-avatar" id="onTimeAvatar" aria-hidden="true"><img src="assets/carvalho-horario.jpg" alt="" /></div>
+                  <div><span class="party-code">PH - 22</span><h2>NO HORÁRIO</h2></div>
+                </div>
+                <div class="candidate-result"><strong id="onTimePercent">0,00%</strong><span><b id="onTimeVotesCard">0</b> votos</span></div>
+                <span class="status-pill" id="onTimeStatus">Em apuração</span>
+                <div class="candidate-meter"><span id="onTimeMeter"></span></div>
+              </article>
+            </div>
+            <p class="election-rule" id="electionRule">A eleição será decidida pela maioria dos votos válidos. Faltas são contabilizadas como abstenções.</p>
+          </section>
+        </div>
+      </section>
+    </main>
+
+    <div class="popup horarioP" id="popHorario" role="status"><h2>Chegada no horário registrada!</h2></div>
+    <div class="popup atrasoP" id="popAtraso" role="status"><h2>Atraso registrado!</h2></div>
+    <div class="popup faltaP" id="popFalta" role="status"><h2>Falta registrada!</h2></div>
+    <div class="popup erro" id="popErro" role="alert"><h2>Você só pode registrar uma chegada por dia!</h2></div>
   </body>
 </html>
