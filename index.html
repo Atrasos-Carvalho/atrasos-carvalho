@@ -20,6 +20,7 @@
       <nav class="main-nav" aria-label="Navegação principal">
         <button class="nav-link active" type="button" data-page="registro">Registro diário</button>
         <button class="nav-link" type="button" data-page="resultados">Resultados</button>
+        <button class="nav-link" type="button" data-page="historico">Histórico</button>
       </nav>
     </header>
 
@@ -85,7 +86,7 @@
 
           <section class="candidates" aria-label="Candidatos e resultado">
             <div class="ballot-heading"><span>RESULTADO NOMINAL</span><span class="live-indicator"><i></i> AO VIVO</span></div>
-            <div class="candidate-grid">
+            <div class="candidate-grid" id="candidateGrid">
               <article class="candidate-card candidate-late" id="candidateLate">
                 <div class="candidate-identity">
                   <div class="candidate-avatar" id="lateAvatar" aria-hidden="true"><img src="assets/carvalho-atraso.jpg" alt="" /></div>
@@ -93,7 +94,6 @@
                 </div>
                 <div class="candidate-result"><strong id="latePercent">0,00%</strong><span><b id="lateVotesCard">0</b> votos</span></div>
                 <span class="status-pill" id="lateStatus"></span>
-                <div class="candidate-meter"><span id="lateMeter"></span></div>
               </article>
 
               <article class="candidate-card candidate-ontime" id="candidateOnTime">
@@ -103,12 +103,42 @@
                 </div>
                 <div class="candidate-result"><strong id="onTimePercent">0,00%</strong><span><b id="onTimeVotesCard">0</b> votos</span></div>
                 <span class="status-pill" id="onTimeStatus"></span>
-                <div class="candidate-meter"><span id="onTimeMeter"></span></div>
               </article>
             </div>
             <p class="election-rule" id="electionRule">A eleição será decidida pela maioria dos votos válidos. Faltas são contabilizadas como abstenções.</p>
           </section>
         </div>
+      </section>
+
+      <section class="page history-page" id="historico" aria-labelledby="history-title" hidden>
+        <div class="results-toolbar">
+          <div>
+            <p class="eyebrow">ELEIÇÃO GERAL · BRASIL</p>
+            <h1 id="history-title">Histórico dos candidatos</h1>
+            <p class="history-intro">Veja como a porcentagem acumulada dos votos válidos mudou ao longo dos dias.</p>
+          </div>
+          <button class="refresh-button" id="refreshHistory" type="button" onclick="carregarHistorico()"><span aria-hidden="true">⟳</span> Atualizar</button>
+        </div>
+
+        <section class="history-card" aria-label="Curva histórica de votos">
+          <div class="history-meta">
+            <div class="history-legend" aria-label="Legenda do gráfico">
+              <span><i class="history-dot late-history-dot"></i>ATRASOS</span>
+              <span><i class="history-dot ontime-history-dot"></i>NO HORÁRIO</span>
+            </div>
+            <p id="historyRange">Carregando datas…</p>
+          </div>
+          <div class="history-chart-wrap">
+            <p class="history-empty" id="historyEmpty" role="status">Carregando histórico…</p>
+            <svg class="history-chart" id="historyChart" width="900" height="430" viewBox="0 0 900 430" role="img" aria-labelledby="historyChartTitle historyChartDesc" hidden>
+              <title id="historyChartTitle">Evolução da porcentagem dos candidatos</title>
+              <desc id="historyChartDesc">Gráfico de linhas com a porcentagem acumulada de votos válidos para Atrasos e No Horário por data.</desc>
+              <g id="historyPlot"></g>
+            </svg>
+            <div class="history-tooltip" id="historyTooltip" role="tooltip" hidden></div>
+          </div>
+          <p class="chart-note">A curva considera os registros de atraso e de chegada no horário. Faltas são abstenções e ficam fora da porcentagem de votos válidos.</p>
+        </section>
       </section>
     </main>
 

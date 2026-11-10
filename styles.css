@@ -5,6 +5,7 @@
   background: #f4f4f5;
   font-synthesis: none;
   --yellow: #e7bd00;
+  --blue: #4c83b5;
   --green: #9cb938;
   --red: #ed5367;
   --muted: #74777c;
@@ -43,10 +44,10 @@ main { min-height: calc(100vh - 94px); }
 .score { display: flex; flex-direction: column; gap: 8px; padding: 14px 16px; border: 1px solid #ffffff50; border-radius: 10px; background: #1013189c; }
 .score span { color: #d9dadd; font-size: 13px; }
 .score strong { font-size: 32px; }
-.score-on-time strong { color: #a9d449; }.score-late strong { color: #f0c52a; }.score-absence strong { color: #ff7889; }
+.score-on-time strong { color: var(--blue); }.score-late strong { color: #f0c52a; }.score-absence strong { color: #ff7889; }
 .btContainer { display: flex; flex-wrap: wrap; gap: 10px; }
 .bt { min-height: 46px; padding: 8px 14px; border: 2px solid currentColor; border-radius: 6px; background: #15181ccc; font-size: 14px; font-weight: 700; cursor: pointer; transition: color .15s ease, background .15s ease; }
-.horario { color: #a9d449; }.horario:hover { color: #111; background: #a9d449; }
+.horario { color: #78b5e5; }.horario:hover { color: #111; background: #78b5e5; }
 .atraso { color: #f0c52a; }.atraso:hover { color: #111; background: #f0c52a; }
 .falta { color: #ff7889; }.falta:hover { color: #111; background: #ff7889; }
 .results-page { padding: clamp(28px, 4vw, 58px) clamp(20px, 5.5vw, 88px) 64px; }
@@ -67,45 +68,84 @@ main { min-height: calc(100vh - 94px); }
 .progress-label { margin: 5px 0 0; color: #75777c; font-size: 11px; text-align: right; }
 .voting-card h2 { margin-bottom: 10px; }
 .vote-bar { display: flex; width: 100%; height: 13px; overflow: hidden; border-radius: 8px; background: #e8e8e8; }
-.vote-bar span { height: 100%; transition: width .3s ease; }.late-segment { background: #d8b600; }.ontime-segment { background: var(--green); }.absence-segment { background: #6691ad; }
+.vote-bar span { height: 100%; transition: width .3s ease; }.late-segment { background: var(--red); }.ontime-segment { background: var(--blue); }.absence-segment { background: #aeb4ba; }
 .votes-total { margin: 7px 0 15px; color: #77797d; font-size: 13px; }
 .voting-card dl > div { margin-top: 11px; }.legend-row dt { display: flex; align-items: center; gap: 9px; }
-.legend-dot { display: inline-block; width: 13px; height: 13px; border-radius: 3px; }.late-dot { background: #d8b600; }.ontime-dot { background: var(--green); }.absence-dot { background: #6691ad; }
+.legend-dot { display: inline-block; width: 13px; height: 13px; border-radius: 3px; }.late-dot { background: var(--red); }.ontime-dot { background: var(--blue); }.absence-dot { background: #aeb4ba; }
 .candidates { min-width: 0; }
 .ballot-heading { display: flex; align-items: center; justify-content: space-between; padding: 0 14px 11px; border-bottom: 2px solid #e4c318; color: #b3980b; font-size: 12px; font-weight: 700; letter-spacing: .04em; }
 .live-indicator { display: flex; align-items: center; gap: 6px; color: #72757a; font-size: 10px; }.live-indicator i { width: 8px; height: 8px; border-radius: 50%; background: #9db838; box-shadow: 0 0 0 3px #9db83830; }
-.candidate-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 22px; }
-.candidate-card { position: relative; min-height: 280px; padding: 24px; border: 2px solid transparent; border-radius: 15px; background: #fff; box-shadow: 0 5px 16px #20242a12; transition: border-color .2s ease, transform .2s ease; }
-.candidate-card.is-elected { border-color: #d9b800; transform: translateY(-2px); }
+.candidate-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; gap: 16px; margin-top: 22px; transition: grid-template-columns .25s ease; }
+.candidate-grid.winner-late { grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr); }
+.candidate-grid.winner-on-time { grid-template-columns: minmax(0, 1fr) minmax(0, 1.45fr); }
+.candidate-card { position: relative; min-height: 215px; padding: 24px; border: 2px solid transparent; border-radius: 15px; background: #fff; box-shadow: 0 5px 16px #20242a12; transition: border-color .2s ease, transform .2s ease; }
+.candidate-card.is-elected { min-height: 285px; border-color: #d9b800; transform: translateY(-2px); }
 .candidate-identity { display: flex; align-items: center; gap: 15px; padding-right: 110px; }
+.candidate-grid.has-winner .candidate-identity { flex-direction: column; align-items: flex-start; gap: 12px; padding-right: 0; }
 .candidate-avatar { flex: 0 0 80px; width: 80px; height: 80px; padding: 4px; border-radius: 50%; background: conic-gradient(from 0deg, #dfbd08 0deg var(--vote-angle, 0deg), #e5e5e3 var(--vote-angle, 0deg) 360deg); transition: --vote-angle .6s ease; }
 .candidate-avatar img { display: block; width: 100%; height: 100%; border: 2px solid #fff; border-radius: 50%; object-fit: cover; }
 .party-code { display: block; margin-bottom: 6px; color: #888a8e; font-size: 11px; }
 .candidate-identity h2 { margin: 0; color: #303238; font-size: clamp(17px, 2vw, 21px); }
+.candidate-card.is-elected .candidate-avatar { flex-basis: 104px; width: 104px; height: 104px; }
+.candidate-card.is-elected .party-code { font-size: 14px; }
+.candidate-card.is-elected .candidate-identity h2 { font-size: clamp(23px, 2.6vw, 29px); }
 .candidate-result { position: absolute; top: 27px; right: 23px; display: flex; flex-direction: column; align-items: end; gap: 5px; }
 .candidate-result strong { color: #cfad00; font-size: clamp(22px, 3vw, 31px); }
 .candidate-result span { color: #38393d; font-size: 12px; }.candidate-result b { font-size: 14px; }
+.candidate-card.is-elected .candidate-result strong { font-size: clamp(32px, 3.5vw, 42px); }
+.candidate-card.is-elected .candidate-result span { font-size: 15px; }
+.candidate-card.is-elected .candidate-result b { font-size: 18px; }
 .status-pill { display: inline-block; margin-top: 24px; padding: 5px 13px; border-radius: 20px; color: #4c4f52; background: #e9eaeb; font-size: 12px; font-weight: 700; }
 .status-pill:empty { display: none; }
 .is-elected .status-pill { color: white; background: var(--green); }
 .is-not-elected .status-pill { color: #46484c; background: #e8e8e8; }
-.candidate-meter { position: absolute; right: 24px; bottom: 21px; left: 24px; height: 6px; overflow: hidden; border-radius: 5px; background: #eee; }
-.candidate-meter span { display: block; width: 0; height: 100%; border-radius: inherit; background: var(--green); transition: width .3s ease, background-color .2s ease; }
-.candidate-card.is-elected .candidate-meter span { background: #d9b800; }
 .election-rule { margin: 18px 0 0; color: #797b80; font-size: 12px; line-height: 1.55; }
+.history-page { padding: clamp(28px, 4vw, 58px) clamp(20px, 5.5vw, 88px) 64px; }
+.history-intro { margin: 10px 0 0; color: #73757b; font-size: 14px; line-height: 1.5; }
+.history-card { padding: 22px 24px 18px; border-radius: 14px; background: #fff; box-shadow: 0 4px 14px #20242a0b; }
+.history-meta { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 12px; }
+.history-legend { display: flex; flex-wrap: wrap; gap: 20px; }
+.history-legend span { display: inline-flex; align-items: center; gap: 8px; color: #4b4d52; font-size: 12px; font-weight: 700; }
+.history-dot { width: 11px; height: 11px; border-radius: 50%; }
+.late-history-dot { background: var(--red); }.ontime-history-dot { background: var(--blue); }
+.history-meta p { margin: 0; color: #77797d; font-size: 12px; text-align: right; }
+.history-chart-wrap { position: relative; width: 100%; min-height: 240px; }
+.history-chart { display: block; width: 100%; height: auto; overflow: visible; }
+.history-chart[hidden] { display: none; }
+.history-gridline { stroke: #e8e9e9; stroke-width: 1; }
+.history-axis-line { stroke: #c9cbcd; stroke-width: 1.2; }
+.history-y-label, .history-x-label { fill: #777a7f; font-family: Verdana, Geneva, Tahoma, sans-serif; font-size: 12px; }
+.history-y-label { text-anchor: end; }.history-x-label { text-anchor: middle; }
+.history-line { fill: none; stroke-width: 3.5; stroke-linecap: round; stroke-linejoin: round; }
+.history-line-late { stroke: var(--red); }.history-line-ontime { stroke: var(--blue); }
+.history-point-late { fill: var(--red); stroke: #fff; stroke-width: 1.5; }.history-point-ontime { fill: var(--blue); stroke: #fff; stroke-width: 1.5; }
+.history-hit-target { fill: transparent; cursor: crosshair; pointer-events: all; }
+.history-hover-line { stroke: #62676e; stroke-width: 1.2; stroke-dasharray: 4 4; opacity: .8; pointer-events: none; }
+.history-tooltip { position: absolute; z-index: 2; display: grid; gap: 2px; width: max-content; max-width: min(240px, calc(100% - 16px)); padding: 10px 12px; border: 1px solid #ffffff35; border-radius: 8px; color: #fff; background: #292d33ee; box-shadow: 0 4px 14px #16191d30; font-size: 12px; line-height: 1.55; pointer-events: none; }
+.tooltip-late { color: #ff8995; }.tooltip-ontime { color: #80b8e5; }
+.history-tooltip[hidden] { display: none; }
+.history-empty { min-height: 240px; display: grid; place-items: center; margin: 0; color: #77797d; font-size: 14px; text-align: center; }
+.history-empty[hidden] { display: none; }
+.chart-note { margin: 12px 0 0; color: #797b80; font-size: 12px; line-height: 1.5; }
 .popup { position: fixed; z-index: 5; bottom: 20px; left: 20px; max-width: min(450px, calc(100vw - 40px)); padding: 13px 16px; border: 3px solid #ddd; border-radius: 8px; background: #25272b; box-shadow: 0 5px 20px #0004; color: white; transition: transform .3s ease, opacity .3s ease; transform: translateX(calc(-100% - 30px)); opacity: 0; }
-.popup h2 { color: inherit; font-size: 14px; }.popup.show { transform: translateX(0); opacity: 1; }.horarioP { border-color: #a9d449; }.atrasoP { border-color: #f0c52a; }.faltaP { border-color: #ff7889; }
+.popup h2 { color: inherit; font-size: 14px; }.popup.show { transform: translateX(0); opacity: 1; }.horarioP { border-color: #78b5e5; }.atrasoP { border-color: #f0c52a; }.faltaP { border-color: #ff7889; }
 
 @media (max-width: 900px) {
   .topbar { gap: 22px; padding-inline: 24px; }.election-title { display: none; }.main-nav { margin-left: auto; }
   .results-layout { grid-template-columns: minmax(220px, 300px) minmax(0, 1fr); gap: 18px; }
-  .candidate-grid { grid-template-columns: 1fr; }.candidate-card { min-height: 225px; }
+  .candidate-grid, .candidate-grid.winner-late, .candidate-grid.winner-on-time { grid-template-columns: 1fr; }.candidate-card { min-height: 205px; }.candidate-card.is-elected { min-height: 275px; }
   .registration-content { max-width: 58%; }.carvalho-hero { width: 44vw; right: 0; }
 }
 @media (max-width: 640px) {
-  .topbar { min-height: 76px; padding: 0 16px; gap: 12px; border-top-width: 6px; }.brand { min-width: auto; }.brand img { width: 34px; height: 34px; }.main-nav { gap: 17px; }.nav-link { font-size: 12px; }
+  .topbar { min-height: 76px; padding: 0 12px; gap: 8px; border-top-width: 6px; }.brand { min-width: auto; gap: 6px; }.brand img { width: 30px; height: 30px; }.brand span { font-size: 9px; }.brand strong { font-size: 12px; }.main-nav { gap: 10px; }.nav-link { padding-inline: 0; font-size: 10px; }
   main { min-height: calc(100vh - 76px); }.registration-page { min-height: calc(100vh - 76px); padding: 42px 20px; }.registration-page::after { background: #11151bba; }.registration-content { max-width: none; }.carvalho-hero { display: none; }
   .display { grid-template-columns: 1fr; max-width: 320px; gap: 8px; margin: 24px 0; }.score { flex-direction: row; justify-content: space-between; align-items: center; padding: 10px 13px; }.score strong { font-size: 25px; }.btContainer { flex-direction: column; align-items: stretch; max-width: 320px; }.bt { width: 100%; text-align: center; }
   .results-page { padding: 28px 16px 42px; }.results-toolbar { align-items: start; }.results-page h1 { max-width: 235px; }.refresh-button { padding-inline: 11px; font-size: 12px; }
-  .results-layout { grid-template-columns: 1fr; }.stats-column { grid-template-columns: 1fr; }.candidate-grid { grid-template-columns: 1fr; gap: 12px; margin-top: 16px; }.candidate-card { min-height: 220px; padding: 20px; }.candidate-identity { gap: 10px; padding-right: 92px; }.candidate-avatar { width: 66px; height: 66px; flex-basis: 66px; padding: 4px; }.candidate-result { top: 24px; right: 18px; }.candidate-result strong { font-size: 23px; }.candidate-meter { left: 20px; right: 20px; bottom: 18px; }
+  .history-page { padding: 28px 16px 42px; }.history-card { padding: 17px 12px 15px; }.history-meta { align-items: start; flex-direction: column; gap: 8px; }.history-meta p { text-align: left; }.history-chart-wrap, .history-empty { min-height: 190px; }.history-y-label, .history-x-label { font-size: 10px; }
+  .results-layout { grid-template-columns: 1fr; }.stats-column { grid-template-columns: 1fr; }.candidate-grid, .candidate-grid.winner-late, .candidate-grid.winner-on-time { grid-template-columns: 1fr; gap: 12px; margin-top: 16px; }.candidate-card { min-height: 195px; padding: 20px; }.candidate-card.is-elected { min-height: 275px; }.candidate-identity { gap: 10px; padding-right: 92px; }.candidate-grid.has-winner .candidate-identity { gap: 12px; padding-right: 0; }.candidate-avatar { width: 66px; height: 66px; flex-basis: 66px; padding: 4px; }.candidate-card.is-elected .candidate-avatar { width: 96px; height: 96px; flex-basis: 96px; }.candidate-card.is-elected .candidate-identity h2 { font-size: clamp(23px, 6vw, 29px); }.candidate-result { top: 24px; right: 18px; }.candidate-result strong { font-size: 23px; }.candidate-card.is-elected .candidate-result strong { font-size: 31px; }.candidate-card.is-elected .candidate-result span { font-size: 14px; }.candidate-card.is-elected .candidate-result b { font-size: 17px; }
+}
+@media (max-width: 380px) {
+  .brand span { display: none; }
+  .main-nav { gap: 8px; }
+  .nav-link { font-size: 9px; }
 }
